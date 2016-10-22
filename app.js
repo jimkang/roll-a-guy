@@ -38,14 +38,30 @@ function bindEmAll() {
 
 function update() {
   sheet.name = makeName();
-  sheet.race = probable.pickFromArray([
-    'Dwarf',
-    'Elf',
-    'Gnome',
-    'Half-Elf',
-    'Halfling',
-    'Human'
-  ]);
+
+  var requestedRace = d3.select('#race-requested').node().value;
+  if (requestedRace == 'Whatevs') {
+    sheet.race = probable.pickFromArray([
+      'Dwarf',
+      'Elf',
+      'Gnome',
+      'Half-Elf',
+      'Halfling',
+      'Human'
+    ]);
+  }
+  else {
+    sheet.race = requestedRace;
+  }
+
+  var requestedLevel = d3.select('#level-requested').node().value;
+  if (!isNaN(requestedLevel)) {
+    sheet.level = requestedLevel;
+  }
+  else {
+    sheet.level = 1;
+  }
+
   sheet.rolls = rollStats();
   var moddedStats = getModdedStats({rolls: sheet.rolls, race: sheet.race});
   sheet.characterClass = pickClass({
@@ -62,6 +78,8 @@ function renderDemographics() {
   d3.select('#name').text(sheet.name);
   d3.select('#race').text(sheet.race);
   d3.select('#class').text(sheet.characterClass);
+  d3.select('#level').text(sheet.level);
+
   d3.select('#demographics').classed('hidden', false);
 }
 
