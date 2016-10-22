@@ -290,15 +290,15 @@ a.shaded {
   border-radius: 0.5em;
 }
 
-#demographics {
+.horizontal-strip {
   display: flex;
 }
 
-.demographic {
+.horizontal-strip-item {
   flex-grow: 1;
 }
 
-.demographic .label {
+.horizontal-strip-item .label {
   font-weight: bold;
 }
 
