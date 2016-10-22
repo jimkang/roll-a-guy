@@ -9,6 +9,7 @@ var makeName = require('./make-name');
 var pickClass = require('./pick-class');
 var pickAlignment = require('./pick-alignment');
 var pickWeapons = require('./pick-weapons');
+var pickArmor = require('./pick-armor');
 
 var probable;
 var dicecup;
@@ -85,9 +86,17 @@ function update() {
     probable: probable    
   });
 
+  sheet.armors = pickArmor({
+    characterClass: sheet.characterClass,
+    probable: probable    
+  });
+
+  sheet.AC = calculateAC();
+
   renderDemographics();
   renderStats(moddedStats);
   renderWeapons(sheet.weapons);
+  renderArmors(sheet.armors);
 }
 
 function renderDemographics() {
@@ -143,6 +152,25 @@ function renderWeapons(weapons) {
   d3.select('#weapons').classed('hidden', false);
 }
 
+function renderArmors(armors) {
+  if (armors.length < 1) {
+    return;
+  }
+  var abilityTable = d3.select('#armor table');
+  var rows = abilityTable.selectAll('.row').data(armors, identity);
+
+  rows.exit().remove();
+
+  var newRows = rows.enter().append('tr').classed('row', true);
+  newRows.append('td').classed('weapon-name', true);
+
+  var updateRows = newRows.merge(rows);
+  updateRows.selectAll('.weapon-name').data(armors, identity)
+    .text(identity);
+
+  d3.select('#armor').classed('hidden', false);
+}
+
 function rollStats() {
   var stats = [
     { id: 'STR', score: dicecup.roll('3d6')[0].total },
@@ -196,4 +224,10 @@ function validateLevelRequested() {
   }
   this.value = value;
   this.textContent = value;
+}
+
+function calculateAC() {
+  var AC = 10;
+  // sheet.armors.map(armor)
+  return AC;
 }
