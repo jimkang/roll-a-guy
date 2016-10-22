@@ -32,6 +32,7 @@ function identity(x) {
 })());
 
 function bindEmAll() {
+  d3.select('#level-requested').on('blur', validateLevelRequested);
   d3.select('#roll-button').on('click', update);
 }
 
@@ -126,4 +127,16 @@ function addBonus(stat) {
   var withBonus = cloneDeep(stat);
   withBonus.bonus = abilityScoreBonuses[stat.id][stat.score];
   return withBonus;
+}
+
+function validateLevelRequested() {
+  var value = parseInt(this.value, 10);
+  if (isNaN(value) || value < 1) {
+    value = 1;
+  }
+  else if (value > 9) {
+    value = 9;
+  }
+  this.value = value;
+  this.textContent = value;
 }
