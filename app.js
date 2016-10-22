@@ -6,6 +6,7 @@ var cloneDeep = require('lodash.clonedeep');
 var accessor = require('accessor');
 var abilityScoreBonuses = require('./ability-score-bonuses');
 var makeName = require('./make-name');
+var pickClass = require('./pick-class');
 
 var probable;
 var dicecup;
@@ -46,9 +47,15 @@ function update() {
   ]);
   sheet.rolls = rollStats();
   var moddedStats = getModdedStats({rolls: sheet.rolls, race: sheet.race});
+  sheet.characterClass = pickClass({
+    race: sheet.race,
+    stats: moddedStats,
+    probable: probable
+  });
 
-  d3.select('#race').text(sheet.race);
   d3.select('#name').text(sheet.name);
+  d3.select('#race').text(sheet.race);
+  d3.select('#class').text(sheet.characterClass);
 
   renderStats(moddedStats);
 }
