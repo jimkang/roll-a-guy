@@ -5,7 +5,33 @@
 </head>
 <body>
 
-<a id="roll-button" class="button">Roll 'em!</a>
+
+<div id="form-container">
+  <div id="char-specs-form" class="form">
+    <div>
+      <p>Level (1-9)</p>
+      <input id="level-requested" type="text" value=""></input>
+    </div>
+
+    <div>
+      <p>Race</p>
+
+      <select>
+        <option>Dwarf</option>
+        <option>Elf</option>
+        <option>Gnome</option>
+        <option>Half-Elf</option>
+        <option>Halfling</option>
+        <option>Human</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="roll-button-container">
+    <a id="roll-button" class="button">Roll 'em!</a>
+  </div>
+
+</div>
 
 <section class="book-page hidden" id="demographics">
   <div class="demographic">

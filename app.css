@@ -199,10 +199,19 @@ body {
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
+  margin-bottom: 1em;
 }
 
-#lookup-form {
+#roll-button-container {
+  padding-left: 2em;
+}
+
+#char-specs-form {
   border-right: dotted 1px white;
+}
+
+#char-specs-form p:first-child {
+  margin-top: 0;
 }
 
 #random-form {
@@ -211,16 +220,15 @@ body {
 
 .form {
   color: white;
-  padding: 1em;
+  padding-right: 2em;
   display: flex;
-  margin-top: 2em;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   flex-grow: 1;
+  flex-direction: column;
 }
 
 .form input {
-  width: 16em;
+  width: 4em;
   border-radius: 1em;
   height: 2em;
   padding: 0.25em;
@@ -240,6 +248,15 @@ body {
   margin-top: 0.8em;
   margin-bottom: 1em;
   cursor: pointer;
+}
+
+.form div {
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+.form div:last-child {
+  margin-bottom: 0;
 }
 
 #go {
