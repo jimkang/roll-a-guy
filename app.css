@@ -284,10 +284,6 @@ a.shaded {
   font-weight: bold;
 }
 
-#demographics dd {
-  margin-left: 0;
-}
-
 @media all and (max-width: 586px) {
   body {
     margin: 0;
@@ -296,6 +292,7 @@ a.shaded {
   .book-page {
     padding-left: 2em;
     padding-top: 0;
+    margin-bottom: 1em;
   }
 
   #title {

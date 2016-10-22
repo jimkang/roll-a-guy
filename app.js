@@ -53,15 +53,19 @@ function update() {
     probable: probable
   });
 
-  d3.select('#name').text(sheet.name);
-  d3.select('#race').text(sheet.race);
-  d3.select('#class').text(sheet.characterClass);
-
+  renderDemographics();
   renderStats(moddedStats);
 }
 
+function renderDemographics() {
+  d3.select('#name').text(sheet.name);
+  d3.select('#race').text(sheet.race);
+  d3.select('#class').text(sheet.characterClass);
+  d3.select('#demographics').classed('hidden', false);
+}
+
 function renderStats(rolls) {
-  var abilityTable = d3.select('#ability-scores');
+  var abilityTable = d3.select('#ability-scores table');
   var statRows = abilityTable.selectAll('.row').data(rolls, getId);
 
   statRows.exit().remove();
@@ -77,6 +81,8 @@ function renderStats(rolls) {
     .text(accessor('score'));
   updateStatRows.selectAll('.ability-bonus-column').data(rolls.map(addBonus), getId)
     .text(accessor('bonus'));
+
+  d3.select('#ability-scores').classed('hidden', false);    
 }
 
 function rollStats() {
