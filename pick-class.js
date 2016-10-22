@@ -40,7 +40,8 @@ var classesForRace = {
     'Cleric',
     'Druid',
     'Thief',
-    'Bard'
+    'Bard',
+    'Illusionist'
   ]
 };
 

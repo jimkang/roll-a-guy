@@ -7,6 +7,7 @@ var accessor = require('accessor');
 var abilityScoreBonuses = require('./ability-score-bonuses');
 var makeName = require('./make-name');
 var pickClass = require('./pick-class');
+var pickAlignment = require('./pick-alignment');
 
 var probable;
 var dicecup;
@@ -29,6 +30,8 @@ function identity(x) {
   });
 
   bindEmAll();
+  
+  d3.select('#roll-button').classed('hidden', false);    
 })());
 
 function bindEmAll() {
@@ -64,9 +67,15 @@ function update() {
 
   sheet.rolls = rollStats();
   var moddedStats = getModdedStats({rolls: sheet.rolls, race: sheet.race});
+
   sheet.characterClass = pickClass({
     race: sheet.race,
     stats: moddedStats,
+    probable: probable
+  });
+
+  sheet.alignment = pickAlignment({
+    characterClass: sheet.characterClass,
     probable: probable
   });
 
@@ -79,6 +88,7 @@ function renderDemographics() {
   d3.select('#race').text(sheet.race);
   d3.select('#class').text(sheet.characterClass);
   d3.select('#level').text(sheet.level);
+  d3.select('#alignment').text(sheet.alignment);
 
   d3.select('#demographics').classed('hidden', false);
 }

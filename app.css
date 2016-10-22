@@ -292,6 +292,7 @@ a.shaded {
 
 .horizontal-strip {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .horizontal-strip-item {
