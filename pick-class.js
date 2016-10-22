@@ -1,3 +1,5 @@
+var intersection = require('lodash.intersection');
+
 var classesForRace = {
   'Dwarf': [
     'Fighter',
@@ -42,10 +44,18 @@ var classesForRace = {
   ]
 };
 
+var rareClasses = ['Paladin', 'Ranger', 'Druid', 'Bard', 'Illusionist'];
+
 function pickClass({race, stats, probable}) {
   var availableClasses = classesForRace[race];
   availableClasses = availableClasses.filter(classIsValidForStats);
-  return probable.pickFromArray(availableClasses);
+  var availableRareClasses = intersection(availableClasses, rareClasses);
+  if (availableRareClasses.length > 0) {
+    return probable.pickFromArray(availableRareClasses);
+  }
+  else {
+    return probable.pickFromArray(availableClasses);
+  }
 
   function classIsValidForStats(charClass) {
     switch (charClass) {
@@ -95,7 +105,7 @@ function pickClass({race, stats, probable}) {
       }    
       break;
     }
-    
+
     return true;
   }
 
