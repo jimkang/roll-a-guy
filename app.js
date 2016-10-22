@@ -8,6 +8,7 @@ var abilityScoreBonuses = require('./ability-score-bonuses');
 var makeName = require('./make-name');
 var pickClass = require('./pick-class');
 var pickAlignment = require('./pick-alignment');
+var pickWeapons = require('./pick-weapons');
 
 var probable;
 var dicecup;
@@ -30,7 +31,7 @@ function identity(x) {
   });
 
   bindEmAll();
-  
+
   d3.select('#roll-button').classed('hidden', false);    
 })());
 
@@ -79,8 +80,14 @@ function update() {
     probable: probable
   });
 
+  sheet.weapons = pickWeapons({
+    characterClass: sheet.characterClass,
+    probable: probable    
+  });
+
   renderDemographics();
   renderStats(moddedStats);
+  renderWeapons(sheet.weapons);
 }
 
 function renderDemographics() {
@@ -112,6 +119,28 @@ function renderStats(rolls) {
     .text(accessor('bonus'));
 
   d3.select('#ability-scores').classed('hidden', false);    
+}
+
+function renderWeapons(weapons) {
+  var abilityTable = d3.select('#weapons table');
+  var rows = abilityTable.selectAll('.row').data(weapons, accessor('name'));
+
+  rows.exit().remove();
+
+  var newRows = rows.enter().append('tr').classed('row', true);
+  newRows.append('td').classed('weapon-quantity', true);
+  newRows.append('td').classed('weapon-name', true);
+  newRows.append('td').classed('weapon-damage', true);
+
+  var updateRows = newRows.merge(rows);
+  updateRows.selectAll('.weapon-quantity').data(weapons, accessor('name'))
+    .text(accessor('quantity'));
+  updateRows.selectAll('.weapon-name').data(weapons, accessor('name'))
+    .text(accessor('name'));
+  updateRows.selectAll('.weapon-damage').data(weapons, accessor('name'))
+    .text(accessor('damage'));
+
+  d3.select('#weapons').classed('hidden', false);
 }
 
 function rollStats() {

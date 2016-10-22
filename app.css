@@ -157,6 +157,31 @@ body {
 }
 
 
+.weapon-quantity {
+  flex: 0 0 2em;
+  order: 1;
+  padding-right: 1em;
+  text-align: right;
+}
+
+.weapon-name {
+  flex: 0 0 10em;
+  order: 2;
+  padding-right: 1em;
+  text-align: left;
+}
+
+.weapon-damage {
+  flex: 1 0 3em;
+  order: 3;
+  padding-right: 1em;
+  text-align: left;
+}
+
+
+
+
+
 .column-header {
   display: flex;
   flex-direction: column;
