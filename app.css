@@ -272,6 +272,22 @@ a.shaded {
   border-radius: 0.5em;
 }
 
+#demographics {
+  display: flex;
+}
+
+.demographic {
+  flex-grow: 1;
+}
+
+.demographic .label {
+  font-weight: bold;
+}
+
+#demographics dd {
+  margin-left: 0;
+}
+
 @media all and (max-width: 586px) {
   body {
     margin: 0;

@@ -30,8 +30,10 @@
     "accessor": "^1.0.1",
     "d3-selection": "^1.0.2",
     "dicecup": "^1.1.0",
+    "lodash.clonedeep": "^4.5.0",
     "lodash.pluck": "^3.1.2",
     "probable": "^2.1.0",
-    "seedrandom": "^2.4.2"
+    "seedrandom": "^2.4.2",
+    "tracery-grammar": "^2.7.2"
   }
 }
