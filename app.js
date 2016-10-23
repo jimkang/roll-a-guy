@@ -10,6 +10,7 @@ var pickClass = require('./pick-class');
 var pickAlignment = require('./pick-alignment');
 var pickWeapons = require('./pick-weapons');
 var pickArmor = require('./pick-armor');
+var director = require('director');
 
 var probable;
 var dicecup;
@@ -22,29 +23,46 @@ function identity(x) {
 }
 
 ((function go() {
-  var seed = (new Date()).toISOString();
+  var router = director.Router({
+    '/:seed/level/:level/race/:race': update
+  });
+  // router.notFound = goFromScratch;
+  router.init();
+  var safeSetRoute = router.setRoute.bind(router);
+
+  bindEmAll(safeSetRoute);
+
+  d3.select('#roll-button').classed('hidden', false);
+})());
+
+function bindEmAll(setRoute) {
+  d3.select('#level-requested').on('blur', validateLevelRequested);
+  d3.select('#roll-button').on('click', UpdateWithFormValues(setRoute));
+}
+
+function UpdateWithFormValues(setRoute) {
+  return updateWithFormValues;
+
+  function updateWithFormValues() {
+    var seed = (new Date()).getTime();
+    var level = d3.select('#level-requested').node().value;
+    var race = d3.select('#race-requested').node().value;
+    setRoute(`/${seed}/level/${level}/race/${race}`);
+  }
+}
+
+function update(stamp, requestedLevel, requestedRace) {
+  var random = seedRandom(stamp);
 
   probable = createProbable({
-    random: seedRandom(seed)
+    random: random
   });
   dicecup = createDiceCup({
     probable: probable
   });
 
-  bindEmAll();
+  sheet.name = makeName(random);
 
-  d3.select('#roll-button').classed('hidden', false);    
-})());
-
-function bindEmAll() {
-  d3.select('#level-requested').on('blur', validateLevelRequested);
-  d3.select('#roll-button').on('click', update);
-}
-
-function update() {
-  sheet.name = makeName();
-
-  var requestedRace = d3.select('#race-requested').node().value;
   if (requestedRace == 'Whatevs') {
     sheet.race = probable.pickFromArray([
       'Dwarf',
@@ -59,7 +77,6 @@ function update() {
     sheet.race = requestedRace;
   }
 
-  var requestedLevel = d3.select('#level-requested').node().value;
   if (!isNaN(requestedLevel)) {
     sheet.level = requestedLevel;
   }
