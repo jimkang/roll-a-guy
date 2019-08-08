@@ -98,6 +98,14 @@ function update(stamp, requestedLevel, requestedRace) {
     probable: probable
   });
 
+  sheet.politicalParty = probable.pickFromArray([
+    'Democratic',
+    'Republican',
+    'Green',
+    'Libertarian',
+    'Socialist'
+  ]);
+
   sheet.weapons = pickWeapons({
     characterClass: sheet.characterClass,
     probable: probable    
@@ -122,6 +130,7 @@ function renderDemographics() {
   d3.select('#class').text(sheet.characterClass);
   d3.select('#level').text(sheet.level);
   d3.select('#alignment').text(sheet.alignment);
+  d3.select('#political-party').text(sheet.politicalParty);
 
   d3.select('#demographics').classed('hidden', false);
 }

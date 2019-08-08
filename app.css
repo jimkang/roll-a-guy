@@ -322,6 +322,7 @@ a.shaded {
 
 .horizontal-strip-item {
   flex-grow: 1;
+  margin-right: 0.5em;
 }
 
 .horizontal-strip-item .label {
