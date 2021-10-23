@@ -22,9 +22,9 @@ function identity(x) {
   return x;
 }
 
-((function go() {
+(function go() {
   var router = director.Router({
-    '/:seed/level/:level/race/:race': update
+    '/:seed/level/:level/race/:race': update,
   });
   // router.notFound = goFromScratch;
   router.init();
@@ -33,18 +33,19 @@ function identity(x) {
   bindEmAll(safeSetRoute);
 
   d3.select('#roll-button').classed('hidden', false);
-})());
+})();
 
 function bindEmAll(setRoute) {
   d3.select('#level-requested').on('blur', validateLevelRequested);
   d3.select('#roll-button').on('click', UpdateWithFormValues(setRoute));
+  d3.select('#copy-button').on('click', copyAsText);
 }
 
 function UpdateWithFormValues(setRoute) {
   return updateWithFormValues;
 
   function updateWithFormValues() {
-    var seed = (new Date()).getTime();
+    var seed = new Date().getTime();
     var level = d3.select('#level-requested').node().value;
     var race = d3.select('#race-requested').node().value;
     setRoute(`/${seed}/level/${level}/race/${race}`);
@@ -55,10 +56,10 @@ function update(stamp, requestedLevel, requestedRace) {
   var random = seedRandom(stamp);
 
   probable = createProbable({
-    random: random
+    random: random,
   });
   dicecup = createDiceCup({
-    probable: probable
+    probable: probable,
   });
 
   sheet.name = makeName(random);
@@ -70,32 +71,30 @@ function update(stamp, requestedLevel, requestedRace) {
       'Gnome',
       'Half-Elf',
       'Halfling',
-      'Human'
+      'Human',
     ]);
-  }
-  else {
+  } else {
     sheet.race = requestedRace;
   }
 
   if (!isNaN(requestedLevel)) {
     sheet.level = requestedLevel;
-  }
-  else {
+  } else {
     sheet.level = 1;
   }
 
   sheet.rolls = rollStats();
-  var moddedStats = getModdedStats({rolls: sheet.rolls, race: sheet.race});
+  var moddedStats = getModdedStats({ rolls: sheet.rolls, race: sheet.race });
 
   sheet.characterClass = pickClass({
     race: sheet.race,
     stats: moddedStats,
-    probable: probable
+    probable: probable,
   });
 
   sheet.alignment = pickAlignment({
     characterClass: sheet.characterClass,
-    probable: probable
+    probable: probable,
   });
 
   sheet.politicalParty = probable.pickFromArray([
@@ -103,17 +102,17 @@ function update(stamp, requestedLevel, requestedRace) {
     'Republican',
     'Green',
     'Libertarian',
-    'Socialist'
+    'Socialist',
   ]);
 
   sheet.weapons = pickWeapons({
     characterClass: sheet.characterClass,
-    probable: probable    
+    probable: probable,
   });
 
   sheet.armors = pickArmor({
     characterClass: sheet.characterClass,
-    probable: probable    
+    probable: probable,
   });
 
   sheet.AC = calculateAC();
@@ -142,18 +141,21 @@ function renderStats(rolls) {
   statRows.exit().remove();
 
   var newStatRows = statRows.enter().append('tr').classed('row', true);
-  newStatRows.append('td').classed('ability-name-column', true)
-    .text(getId);
+  newStatRows.append('td').classed('ability-name-column', true).text(getId);
   newStatRows.append('td').classed('ability-score-column', true);
   newStatRows.append('td').classed('ability-bonus-column', true);
 
   var updateStatRows = newStatRows.merge(statRows);
-  updateStatRows.selectAll('.ability-score-column').data(rolls, getId)
+  updateStatRows
+    .selectAll('.ability-score-column')
+    .data(rolls, getId)
     .text(accessor('score'));
-  updateStatRows.selectAll('.ability-bonus-column').data(rolls.map(addBonus), getId)
+  updateStatRows
+    .selectAll('.ability-bonus-column')
+    .data(rolls.map(addBonus), getId)
     .text(accessor('bonus'));
 
-  d3.select('#ability-scores').classed('hidden', false);    
+  d3.select('#ability-scores').classed('hidden', false);
 }
 
 function renderWeapons(weapons) {
@@ -168,11 +170,17 @@ function renderWeapons(weapons) {
   newRows.append('td').classed('weapon-damage', true);
 
   var updateRows = newRows.merge(rows);
-  updateRows.selectAll('.weapon-quantity').data(weapons, accessor('name'))
+  updateRows
+    .selectAll('.weapon-quantity')
+    .data(weapons, accessor('name'))
     .text(accessor('quantity'));
-  updateRows.selectAll('.weapon-name').data(weapons, accessor('name'))
+  updateRows
+    .selectAll('.weapon-name')
+    .data(weapons, accessor('name'))
     .text(accessor('name'));
-  updateRows.selectAll('.weapon-damage').data(weapons, accessor('name'))
+  updateRows
+    .selectAll('.weapon-damage')
+    .data(weapons, accessor('name'))
     .text(accessor('damage'));
 
   d3.select('#weapons').classed('hidden', false);
@@ -191,8 +199,7 @@ function renderArmors(armors) {
   newRows.append('td').classed('weapon-name', true);
 
   var updateRows = newRows.merge(rows);
-  updateRows.selectAll('.weapon-name').data(armors, identity)
-    .text(identity);
+  updateRows.selectAll('.weapon-name').data(armors, identity).text(identity);
 
   d3.select('#armor').classed('hidden', false);
 }
@@ -204,12 +211,12 @@ function rollStats() {
     { id: 'CON', score: dicecup.roll('3d6')[0].total },
     { id: 'INT', score: dicecup.roll('3d6')[0].total },
     { id: 'WIS', score: dicecup.roll('3d6')[0].total },
-    { id: 'CHA', score: dicecup.roll('3d6')[0].total }
+    { id: 'CHA', score: dicecup.roll('3d6')[0].total },
   ];
   return stats;
 }
 
-function getModdedStats({rolls, race}) {
+function getModdedStats({ rolls, race }) {
   var modded = cloneDeep(rolls);
 
   switch (race) {
@@ -244,8 +251,7 @@ function validateLevelRequested() {
   var value = parseInt(this.value, 10);
   if (isNaN(value) || value < 1) {
     value = 1;
-  }
-  else if (value > 9) {
+  } else if (value > 9) {
     value = 9;
   }
   this.value = value;
@@ -256,4 +262,10 @@ function calculateAC() {
   var AC = 10;
   // sheet.armors.map(armor)
   return AC;
+}
+
+function copyAsText() {
+  console.log(
+    sheet.rolls.map((roll) => `${roll.id}: ${roll.score}`).join('\n')
+  );
 }

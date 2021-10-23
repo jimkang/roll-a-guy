@@ -99,7 +99,7 @@ body {
   flex: 0 0 5.5em;
   order: 1;
   padding-right: 1em;
-  text-align: center;  
+  text-align: center;
 }
 
 .xp-low-end-column {
@@ -232,6 +232,18 @@ body {
   padding-left: 2em;
 }
 
+#roll-button-container {
+  padding-left: 2em;
+}
+
+#copy-button {
+  color: #fff;
+  height: initial;
+  line-height: initial;
+  border: none;
+  font-weight: bold;
+}
+
 #char-specs-form {
   border-right: dotted 1px white;
 }
@@ -286,7 +298,7 @@ body {
 }
 
 #go {
-  width: 1.8em;  
+  width: 1.8em;
 }
 
 #get-random-class-button {
